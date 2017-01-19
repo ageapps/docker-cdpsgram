@@ -1,0 +1,76 @@
+version: "2"
+services:
+    db:
+      image: mongo
+      command: mongod --smallfiles
+      networks:
+        - db-net
+
+    server:
+      build: server
+      depends_on:
+        - db
+        - photos-rest
+      environment:
+        - PHOTOS_URL=/PHOTOS
+      networks:
+        - db-net
+        - server-net
+
+
+    photos-rest:
+      build: photos-rest
+      volumes:
+        - ./photos-rest/media:/server/media
+      networks:
+        - photos-net
+
+    lb-server:
+      image: dockercloud/haproxy
+      links:
+        - server
+      # For Docker Machine guys
+      environment:
+        - DOCKER_TLS_VERIFY
+        - DOCKER_HOST
+        - DOCKER_CERT_PATH
+      volumes:
+        - $DOCKER_CERT_PATH:$DOCKER_CERT_PATH
+      networks:
+        - lb-net
+        - server-net
+
+    lb-photos:
+      image: dockercloud/haproxy
+      links:
+        - photos-rest
+      # For Docker Machine guys
+      environment:
+        - DOCKER_TLS_VERIFY
+        - DOCKER_HOST
+        - DOCKER_CERT_PATH
+      volumes:
+        - $DOCKER_CERT_PATH:$DOCKER_CERT_PATH
+      networks:
+        - lb-net
+        - photos-net
+
+    proxy:
+      build: proxy
+      ports:
+        - "80:80"
+      depends_on:
+        - lb-photos
+        - lb-server
+      networks:
+        - lb-net
+
+networks:
+  lb-net:
+    driver: bridge
+  server-net:
+    driver: bridge
+  photos-net:
+    driver: bridge
+  db-net:
+    driver: bridge

@@ -1,0 +1,35 @@
+version: "2"
+services:
+    server:
+      build: server
+      ports:
+        - "8080:8080"
+      depends_on:
+        - db
+        - photos-rest
+      environment:
+        - PHOTOS_URL=/PHOTOS
+      # stdin_open: true
+      # tty: true
+      # command: bash
+
+    db:
+      image: mongo
+      command: mongod --smallfiles
+      ports:
+        - "27017:27017"
+
+    proxy:
+      build: proxy
+      ports:
+          - "8001:80"
+      depends_on:
+          - server
+          - photos-rest
+
+    photos-rest:
+      build: photos-rest
+      volumes:
+        - ./photos-rest/media:/server/media
+      ports:
+        - "8000:8000"

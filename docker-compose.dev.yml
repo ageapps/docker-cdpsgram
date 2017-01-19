@@ -1,0 +1,21 @@
+version: "2"
+services:
+  server:
+    build:
+      context: server
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./server:/server
+    depends_on:
+      - db
+    # stdin_open: true
+    # tty: true
+    # command: bash
+
+  db:
+    image: mongo
+    command: mongod --smallfiles
+    ports:
+      - "27017:27017"

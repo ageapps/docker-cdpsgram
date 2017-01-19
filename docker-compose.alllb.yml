@@ -1,0 +1,56 @@
+version: "2"
+services:
+    server:
+      build: server
+      depends_on:
+        - db
+        - photos-rest
+      environment:
+        - PHOTOS_URL=/PHOTOS
+
+    db:
+      image: mongo
+      command: mongod --smallfiles
+
+    proxy:
+      build: proxy
+      ports:
+          - "8000:80"
+      depends_on:
+          - lb-server
+          - lb-photos
+
+    photos-rest:
+      build: photos-rest
+      volumes:
+        - ./photos-rest/media:/server/media
+
+    lb-server:
+      image: dockercloud/haproxy
+      links:
+        - server
+      # For Docker Machine guys
+      environment:
+        - DOCKER_TLS_VERIFY
+        - DOCKER_HOST
+        - DOCKER_CERT_PATH
+      volumes:
+        - $DOCKER_CERT_PATH:$DOCKER_CERT_PATH
+      ports:
+        - "8081:80"
+        - "8881:1936"
+
+    lb-photos:
+      image: dockercloud/haproxy
+      links:
+        - photos-rest
+      # For Docker Machine guys
+      environment:
+        - DOCKER_TLS_VERIFY
+        - DOCKER_HOST
+        - DOCKER_CERT_PATH
+      volumes:
+        - $DOCKER_CERT_PATH:$DOCKER_CERT_PATH
+      ports:
+        - "8082:80"
+        - "8882:1936"

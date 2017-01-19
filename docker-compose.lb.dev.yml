@@ -1,0 +1,40 @@
+version: "2"
+services:
+  server:
+    build: server
+    depends_on:
+      - db
+    networks:
+      - db-net
+      - back-net
+    # stdin_open: true
+    # tty: true
+    # command: bash
+
+  db:
+    image: mongo
+    command: mongod --smallfiles
+    networks:
+      - db-net
+
+  lb:
+    image: dockercloud/haproxy
+    links:
+      - server
+    # For Docker Machine guys
+    environment:
+      - DOCKER_TLS_VERIFY
+      - DOCKER_HOST
+      - DOCKER_CERT_PATH
+    volumes:
+      - $DOCKER_CERT_PATH:$DOCKER_CERT_PATH
+    ports:
+      - "8080:80"
+      - "8888:1936"
+    networks:
+      - back-net
+networks:
+  db-net:
+    driver: bridge
+  back-net:
+    driver: bridge
