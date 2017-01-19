@@ -65,16 +65,6 @@ services:
       networks:
         - lb-net
 
-    dd-agent:
-      image: datadog/docker-dd-agent:latest
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-        - /proc/:/host/proc/:ro
-        - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
-      environment:
-        - API_KEY=ae88c24d8f640a0314ca04e5a4f50190
-
-
 networks:
   lb-net:
     driver: bridge

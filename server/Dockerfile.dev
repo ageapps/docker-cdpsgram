@@ -1,0 +1,20 @@
+FROM node:latest
+
+MAINTAINER Adrián García Espinosa "age.apps.dev@gmail.com"
+
+# Create app directory
+RUN mkdir /server
+
+RUN npm install --global nodemon
+
+# VOLUME ./app:/server
+WORKDIR /server
+
+ADD package.json /server/package.json
+RUN npm install
+
+ADD nodemon.json /server/nodemon.json
+
+EXPOSE 8080
+
+CMD nodemon -L ./bin/www

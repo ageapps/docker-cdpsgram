@@ -1,0 +1,33 @@
+<%
+var photos_url = process.env.PHOTOS_URL || "http://localhost:8000";
+%>
+<div class="photo photo_playing">
+	<p><%=photo.name%></p>
+	<img src="<%=photo.url%>"></img>
+	
+	<form method="post" action="/photos/<%=photo.id%>?_method=delete">
+	    <button onClick="return confirm('Delete: <%=photo.name%>. Are you sure? ');">
+	      Delete photo
+	    </button>
+  	</form>
+</div>
+
+<script type="text/javascript">
+$('button').click(function (evt) {
+
+	evt.preventDefault();
+	var url = '<%=photo.url%>';
+
+	// Borra la imagen del servidor de imágenes
+	$.ajax({
+		url: url,
+		type: 'DELETE',
+		statusCode: {
+			200: function (data, status, xhr) {
+				// Una vez borrada envía al servidor CDPSgram-server la petición para eliminar la entrada en la base de datos
+				$('form').submit();
+			}
+		}
+	});
+});
+</script>

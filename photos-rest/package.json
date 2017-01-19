@@ -1,0 +1,12 @@
+{
+  "name": "cdpsgram-photos",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node rest_server.js"
+  },
+  "dependencies": {
+    "express": "~4.13.1",
+    "multer": "^0.1.8"
+  }
+}

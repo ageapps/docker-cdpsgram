@@ -1,0 +1,92 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+h1 a {
+	text-decoration: none;
+	color: black;
+}
+
+#header {
+	padding-bottom: 20px;
+}
+
+#nav-bar {
+	float: left;
+	height: 600px;
+	width: 200px;
+	border-right: 3px groove black;
+}
+
+#nav-bar ul {
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+#nav-bar li {
+	padding-bottom: 20px;
+}
+
+#container-body {
+	padding-left: 250px;
+	width: 900px;
+}
+
+#welcome {
+	padding-left: 50px;
+	text-align: center;
+}
+
+#welcome span {
+	margin-top: 20px;
+}
+
+.photo {
+	width: 300px;
+	height: 200px;
+	padding-top: 50px;
+	float: left;
+	text-decoration: none;
+	color: black;
+	text-align: center;
+}
+
+.photo_playing {
+	width: 500px;
+	height: 500px;
+	padding-left: 200px;
+}
+
+.photo_playing button {
+	margin-top: 50px;
+}
+
+.photo p {
+	text-align: center;
+}
+
+.photo img {
+	width: 60px;
+	height: 60px;
+	border: 1px groove black;
+	padding: 20px;
+}
+
+.photo_playing img {
+	width: 500px;
+	height: 500px;
+}
+
+.photo audio {
+	width: 100%;
+}
+
+.upload_field {
+	display: block;
+	margin-top: 15px;
+}
