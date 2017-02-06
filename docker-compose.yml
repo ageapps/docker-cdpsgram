@@ -1,10 +1,37 @@
 version: "2"
 services:
     db:
-      image: mongo
-      command: mongod --smallfiles
+      build: ./mongo
+      environment:
+       - RSET=rs0
+       - SLAVE1=mongodb-slave1
+       - SLAVE2=mongodb-slave2
+       - SLAVE3=mongodb-slave3
+      depends_on:
+       - mongodb-slave1
+       - mongodb-slave2
+       - mongodb-slave3
       networks:
-        - db-net
+       - db-net
+       - mongo-net
+
+    mongodb-slave1:
+      image: mongo
+      command: mongod --smallfiles --replSet "rs0"
+      networks:
+       - mongo-net
+
+    mongodb-slave2:
+      image: mongo
+      command: mongod --smallfiles --replSet "rs0"
+      networks:
+       - mongo-net
+
+    mongodb-slave3:
+      image: mongo
+      command: mongod --smallfiles --replSet "rs0"
+      networks:
+       - mongo-net
 
     server:
       build: server
@@ -73,4 +100,6 @@ networks:
   photos-net:
     driver: bridge
   db-net:
+    driver: bridge
+  mongo-net:
     driver: bridge
