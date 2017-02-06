@@ -5,7 +5,7 @@ High availability system whith [CDPSGram server] and [CDPSGram photos] servers.
 
 ## System Diagram
 
-![system-diagram](./art/system-diagram.jpg)
+![system-diagram](./art/system-diagram.png)
 
 The system consists on the following containers:
 
